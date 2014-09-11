@@ -11,71 +11,19 @@ import java.util.ArrayList;
  * Simple memory match game 4 x 4 grid. Just to show logic of panels and etc.
  */
 
-
-
 public class Portfolio1
 {
-	private static int gameState;
-	private static final int NO_CARDS_FLIPPED = 1;
-	private static final int ONE_CARD_FLIPPED = 2;
-	private static final int TWO_CARDS_FLIPPED = 3;
+	public static int gameState;
+	public static final int NO_CARDS_FLIPPED = 1;
+	public static final int ONE_CARD_FLIPPED = 2;
+	public static final int TWO_CARDS_FLIPPED = 3;
 
 	public static GameCard[] gameCards = new GameCard[16];
 	public static Color[] colors = new Color[16];
 
-	public static void main(String[] args)
-	{
+	private static GameCard[] flippedCards = new GameCard[2];
 
-		JFrame frame = new JFrame("The awesomest memory game");
-		frame.setSize(new Dimension(600, 480));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		frame.setContentPane(createContainers());
-		gameState = NO_CARDS_FLIPPED;
-
-		//frame.pack();
-		frame.setVisible(true);
-	}
-
-	static JPanel createContainers()
-	{
-		JPanel mainPanel = createMainPanel();
-		JPanel gamePanel = createGamePanel();
-
-		GameCard[] gameCards = createGameButtons();
-
-		for (GameCard card : gameCards)
-		{
-			gamePanel.add(card);
-		}
-
-		mainPanel.add(gamePanel);
-
-		return mainPanel;
-
-	}
-
-	private static JPanel createGamePanel()
-	{
-		JPanel gamePanel = new JPanel();
-
-		GridLayout gridLayout = new GridLayout(4, 4);
-		gridLayout.setHgap(15);
-		gridLayout.setVgap(15);
-
-		gamePanel.setLayout(gridLayout);
-		gamePanel.setBackground(Color.black);
-		return gamePanel;
-	}
-
-	static JPanel createMainPanel()
-	{
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-		return mainPanel;
-	}
-
-	private static GameCard[] createGameButtons()
+	protected static GameCard[] createGameCards()
 	{
 		colors = generateGameColors(gameCards.length);
 
@@ -96,6 +44,14 @@ public class Portfolio1
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
+						if (gameState == TWO_CARDS_FLIPPED)
+						{
+							flipCard(flippedCards[0].cardIndex);
+							flipCard(flippedCards[1].cardIndex);
+
+							gameState = NO_CARDS_FLIPPED;
+						}
+
 						flipCard(index);
 						checkMatch();
 					}
@@ -211,14 +167,21 @@ public class Portfolio1
 		{
 			gameCards[index].setBackground(colors[index]);
 			gameCards[index].state = GameCard.STATE_FLIPPED;
+
+			if (gameState == NO_CARDS_FLIPPED)
+				flippedCards[0] = gameCards[index];
+			else
+				flippedCards[1] = gameCards[index];
+
+			gameState++;
 		}
 		else
 		{
 			gameCards[index].setBackground(Color.blue);
 			gameCards[index].state = GameCard.STATE_UNFLIPPED;
-		}
 
-		gameState++;
+			gameState--;
+		}
 	}
 
 	private static void checkMatch()
@@ -226,25 +189,23 @@ public class Portfolio1
 		if (gameState != TWO_CARDS_FLIPPED) //Only need to check if two cards are flipped
 			return;
 
-		ArrayList<GameCard> flippedCards = new ArrayList<GameCard>();
-
-		for (GameCard card : gameCards)
+		if (flippedCards[0].cardColor == flippedCards[1].cardColor)
 		{
-			if (card.state == GameCard.STATE_FLIPPED)
-				flippedCards.add(card);
-		}
+			flippedCards[0].state = GameCard.STATE_MATCHED;
+			flippedCards[1].state = GameCard.STATE_MATCHED;
 
-		if (flippedCards.get(0).cardColor == flippedCards.get(1).cardColor)
-		{
-			flippedCards.get(0).state = GameCard.STATE_MATCHED;
-			flippedCards.get(1).state = GameCard.STATE_MATCHED;
+			matchCards();
 		}
-		else
-		{
-			flipCard(flippedCards.get(0).cardIndex);
-			flipCard(flippedCards.get(1).cardIndex);
-		}
+	}
 
-		gameState = 1;
+	private static void matchCards()
+	{
+		flippedCards[0].setEnabled(false);
+		flippedCards[1].setEnabled(false);
+
+		flippedCards[0] = null;
+		flippedCards[1] = null;
+
+		gameState = NO_CARDS_FLIPPED;
 	}
 }
