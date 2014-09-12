@@ -6,6 +6,8 @@ import java.awt.*;
  */
 public class View
 {
+	public static JLabel score = new JLabel("0");
+
 	public static void main(String[] args)
 	{
 
@@ -22,7 +24,12 @@ public class View
 
 	static JPanel createContainers()
 	{
+		score.setFont(new Font("Arial", 0, 14));
+		score.setForeground(Color.RED);
+
 		JPanel mainPanel = createMainPanel();
+		mainPanel.setBackground(Color.black);
+		JPanel scoringPanel = createScoringPanel(score);
 		JPanel gamePanel = createGamePanel();
 
 		Portfolio1.gameCards = Portfolio1.createGameCards();
@@ -32,10 +39,28 @@ public class View
 			gamePanel.add(card);
 		}
 
+		mainPanel.add(Box.createVerticalStrut(25));
+		mainPanel.add(scoringPanel);
+		mainPanel.add(Box.createVerticalStrut(25));
 		mainPanel.add(gamePanel);
 
 		return mainPanel;
+	}
 
+	private static JPanel createScoringPanel(final JLabel score)
+	{
+		JPanel scoringPanel = new JPanel();
+		Box hBox = Box.createHorizontalBox();
+
+		scoringPanel.setLayout(new BoxLayout(scoringPanel, BoxLayout.X_AXIS));
+		JLabel scoreLabel = new JLabel("Score: ");
+		hBox.add(scoreLabel);
+		hBox.add(Box.createRigidArea(new Dimension(10, 20)));
+		hBox.add(score);
+
+		scoringPanel.add(hBox);
+
+		return scoringPanel;
 	}
 
 	private static JPanel createGamePanel()
@@ -54,7 +79,7 @@ public class View
 	static JPanel createMainPanel()
 	{
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		return mainPanel;
 	}
 }
