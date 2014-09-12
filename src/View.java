@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Kyle on 9/10/2014.
@@ -81,5 +83,24 @@ public class View
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		return mainPanel;
+	}
+
+	public static void winGame()
+	{
+		JPanel winPanel = new JPanel();
+		Object[] options = new Object[1];
+		options[0] = new JButton("Exit");
+		((JButton) options[0]).addActionListener(
+				new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						System.exit(0);
+					}
+				}
+		);
+
+		JOptionPane.showOptionDialog(winPanel, "Hooray for you! You won this simple game!", "Well aren't you a winner!", JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 	}
 }

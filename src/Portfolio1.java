@@ -18,12 +18,14 @@ public class Portfolio1
 	public static final int ONE_CARD_FLIPPED = 2;
 	public static final int TWO_CARDS_FLIPPED = 3;
 	public static final int END_OF_ROUND = 4;
+	public static final int END_OF_GAME = 5;
 
 	public static GameCard[] gameCards = new GameCard[16];
 	public static Color[] colors = new Color[16];
 
 	private static GameCard[] flippedCards = new GameCard[2];
 	private static int gameScore = 0;
+	private static int numMatchedCards = 0;
 
 	protected static GameCard[] createGameCards()
 	{
@@ -223,6 +225,15 @@ public class Portfolio1
 		flippedCards[0] = null;
 		flippedCards[1] = null;
 
+		numMatchedCards += 2;
+
 		gameState = NO_CARDS_FLIPPED;
+
+		if (numMatchedCards == gameCards.length)
+		{
+			gameState = 5;
+
+			View.winGame();
+		}
 	}
 }
