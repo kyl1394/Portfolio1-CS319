@@ -17,11 +17,15 @@ public class Portfolio1
 	public static final int NO_CARDS_FLIPPED = 1;
 	public static final int ONE_CARD_FLIPPED = 2;
 	public static final int TWO_CARDS_FLIPPED = 3;
+	public static final int END_OF_ROUND = 4;
+	public static final int END_OF_GAME = 5;
 
 	public static GameCard[] gameCards = new GameCard[16];
 	public static Color[] colors = new Color[16];
 
 	private static GameCard[] flippedCards = new GameCard[2];
+	private static int gameScore = 0;
+	private static int numMatchedCards = 0;
 
 	protected static GameCard[] createGameCards()
 	{
@@ -53,7 +57,15 @@ public class Portfolio1
 						}
 
 						flipCard(index);
-						checkMatch();
+						if (gameState == NO_CARDS_FLIPPED)
+						{
+							gameScore++;
+							View.score.setText("" + gameScore);
+						}
+						else
+						{
+							checkMatch();
+						}
 					}
 				}
 		);
@@ -175,12 +187,18 @@ public class Portfolio1
 
 			gameState++;
 		}
-		else
+		else if (gameCards[index].state == GameCard.STATE_FLIPPED)
 		{
 			gameCards[index].setBackground(Color.blue);
 			gameCards[index].state = GameCard.STATE_UNFLIPPED;
 
 			gameState--;
+		}
+
+		if (gameState == TWO_CARDS_FLIPPED)
+		{
+			gameScore++;
+			View.score.setText("" + gameScore);
 		}
 	}
 
@@ -195,6 +213,7 @@ public class Portfolio1
 			flippedCards[1].state = GameCard.STATE_MATCHED;
 
 			matchCards();
+			return;
 		}
 	}
 
@@ -206,6 +225,15 @@ public class Portfolio1
 		flippedCards[0] = null;
 		flippedCards[1] = null;
 
+		numMatchedCards += 2;
+
 		gameState = NO_CARDS_FLIPPED;
+
+		if (numMatchedCards == gameCards.length)
+		{
+			gameState = 5;
+
+			View.winGame();
+		}
 	}
 }
