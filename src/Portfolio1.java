@@ -202,6 +202,7 @@ public class Portfolio1
 		}
 	}
 
+	//Check to see if the two cards that are flipped match colors
 	private static void checkMatch()
 	{
 		if (gameState != TWO_CARDS_FLIPPED) //Only need to check if two cards are flipped
@@ -217,6 +218,7 @@ public class Portfolio1
 		}
 	}
 
+	//Set the two flipped cards to "Matched" state
 	private static void matchCards()
 	{
 		flippedCards[0].setEnabled(false);
