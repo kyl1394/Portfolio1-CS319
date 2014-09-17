@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Kyle on 9/10/2014.
  */
+//A view to closer utilize a mvc structure and decouple the program
 public class View
 {
 	public static JLabel score = new JLabel("0");
@@ -20,10 +21,11 @@ public class View
 		frame.setContentPane(createContainers());
 		Portfolio1.gameState = Portfolio1.NO_CARDS_FLIPPED;
 
-		//frame.pack();
+		//Now set the frame to visible, once it is set up
 		frame.setVisible(true);
 	}
 
+	//Create the UI, Panels are constructed in seperate functions and added to the mainPanel that is returned, containing the entire UI
 	static JPanel createContainers()
 	{
 		score.setFont(new Font("Arial", 0, 14));

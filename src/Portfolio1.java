@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Kyle on 9/9/2014.
  * Simple memory match game 4 x 4 grid. Just to show logic of panels and etc.
+ * This is a program that keeps track of a game that can have multiple states, and different things need to happen depending on that state.
  */
 
 public class Portfolio1

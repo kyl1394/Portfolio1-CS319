@@ -4,6 +4,7 @@ import javax.swing.JButton;
 /**
  * Created by Kyle on 9/9/2014.
  */
+//Utilize basic OO design
 public class GameCard extends JButton
 {
 	public int cardIndex;
